@@ -16,5 +16,6 @@ RUN php -r "unlink('composer-setup.php');"
 
 RUN mv composer.phar /usr/local/bin/composer
 RUN mkdir /run/php
-
-CMD ["/usr/sbin/php-fpm8.2", "-F"]
+WORKDIR /symfony
+#CMD ["/usr/sbin/php-fpm8.2", "-F"]
+CMD /symfony-entrypoint.sh
