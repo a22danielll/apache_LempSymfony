@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./symfony:/symfony
+      - ./conf/vhostnginx.conf:/etc/nginx/conf.d/vhost.conf
+      - ./conf/example.crt:/cert/certificado.crt
+      - ./conf/example.key:/cert/chave.key
+  symfony:
+    build: conf
+    volumes:
+      - ./conf/www.conf:/etc/php/8.2/fpm/pool.d/www.conf
+      - ./symfony:/symfony
+
+  db:
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: abc123.
+      MARIADB_DATABASE: symfony
+      MARIADB_USER: symfony
+      MARIADB_PASSWORD: symfony
+    volumes:
+      - basesymfony:/var/lib/mysql
+      - ./db:/db
+      - ./db/db.sql:/docker-entrypoint-initdb.d/db.sql
+volumes:
+  basesymfony:
